@@ -1,6 +1,8 @@
 from flask import Flask
 from flask import request
 import configparser
+from threading import Lock
+
 from ahk import AHK
 
 app = Flask(__name__)
@@ -11,9 +13,12 @@ avaliable_controls = [name for name, value in config.items('control')]
 
 ahk = AHK()
 window = ahk.find_window(title=config['general']['title'].encode())
+control_lock = Lock()
 
 def press(key="", window=window):
-    window.send(key, press_duration=110)
+    global control_lock
+    with control_lock:
+        window.send(key, press_duration=110)
 
 @app.route('/', methods=['GET'])
 def receive_control():
