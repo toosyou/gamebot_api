@@ -15,7 +15,7 @@ ahk = AHK()
 window = ahk.find_window(title=config['general']['title'].encode())
 control_lock = Lock()
 
-def press(key="", window=window):
+def press(key="", window=window, repeat=1):
     global control_lock
     with control_lock:
         window.send(key, press_duration=110, blocking=True)
@@ -23,9 +23,10 @@ def press(key="", window=window):
 @app.route('/', methods=['GET'])
 def receive_control():
     control = request.args.get('control')
+    repeat = request.args.get('repeat') if request.args.get('repeat') is not None else 1
 
     if control in avaliable_controls:
-        press(config['control'][control])
+        press(config['control'][control], repeat=repeat)
 
     return ''
 
