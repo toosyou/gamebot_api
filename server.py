@@ -18,7 +18,7 @@ control_lock = Lock()
 def press(key="", window=window, repeat=1):
     global control_lock
     with control_lock:
-        window.send(key, press_duration=110, blocking=True)
+        window.send(key*repeat, press_duration=110, blocking=True)
 
 @app.route('/', methods=['GET'])
 def receive_control():
