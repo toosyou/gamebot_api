@@ -23,7 +23,7 @@ def press(key="", window=window, repeat=1):
 @app.route('/', methods=['GET'])
 def receive_control():
     control = request.args.get('control')
-    repeat = request.args.get('repeat') if request.args.get('repeat') is not None else 1
+    repeat = int(request.args.get('repeat')) if request.args.get('repeat') is not None else 1
 
     if control in avaliable_controls:
         press(config['control'][control], repeat=repeat)
